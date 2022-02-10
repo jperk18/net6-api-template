@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace Health.Patient.Api.Core.Serialization;
+namespace Health.Patient.Transport.Api.Core.Serialization;
 
 public interface IJsonSerializer
 {

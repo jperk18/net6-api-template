@@ -1,5 +1,4 @@
 using System.Net.Mime;
-using Health.Patient.Api.Middleware;
 using Health.Patient.Api.Requests;
 using Health.Patient.Domain.Commands.Core;
 using Health.Patient.Domain.Commands.CreatePatientCommand;
@@ -7,9 +6,10 @@ using Health.Patient.Domain.Core.Models;
 using Health.Patient.Domain.Queries.Core;
 using Health.Patient.Domain.Queries.GetAllPatientsQuery;
 using Health.Patient.Domain.Queries.GetPatientQuery;
+using Health.Patient.Transport.Api.Middleware;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Health.Patient.Api.Controllers;
+namespace Health.Patient.Transport.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]

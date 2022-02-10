@@ -1,4 +1,4 @@
-﻿namespace Health.Patient.Api.Middleware;
+﻿namespace Health.Patient.Transport.Api.Middleware;
 
 public class ApiGenericException
 {

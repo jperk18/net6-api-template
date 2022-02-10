@@ -1,7 +1,8 @@
-using Health.Patient.Api.Middleware;
 using Health.Patient.Domain.Core;
 using Health.Patient.Storage.Sql.Core;
 using Health.Patient.Transport.Api.Core;
+using Health.Patient.Transport.Api.Core.Serialization;
+using Health.Patient.Transport.Api.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,7 +23,7 @@ builder.Services.AddSingleton<IApiConfiguration>(apiSettings);
 
 builder.Services.AddControllers();
 builder.Services.AddTransient<ExceptionHandlingMiddleware>();
-builder.Services.AddSingleton<Health.Patient.Api.Core.Serialization.IJsonSerializer, Health.Patient.Api.Core.Serialization.JsonSerializer>();
+builder.Services.AddSingleton<IJsonSerializer, JsonSerializer>();
 
 // Add Services to Domain (and storage dependant service)
 var storageSettings = builder.Configuration.GetSection("DomainConfiguration:StorageConfiguration:PatientDatabase").Get<SqlDatabaseConfiguration>();

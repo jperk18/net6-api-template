@@ -1,7 +1,7 @@
-﻿using FluentValidation;
-using Health.Patient.Api.Core.Serialization;
+﻿using Health.Patient.Domain.Core.Exceptions;
+using Health.Patient.Transport.Api.Core.Serialization;
 
-namespace Health.Patient.Api.Middleware;
+namespace Health.Patient.Transport.Api.Middleware;
 
 internal sealed class ExceptionHandlingMiddleware : IMiddleware
 {
@@ -33,21 +33,17 @@ internal sealed class ExceptionHandlingMiddleware : IMiddleware
         httpContext.Response.ContentType = "application/json";
         httpContext.Response.StatusCode = statusCode;
         await httpContext.Response.WriteAsync(_serializer.Serialize(response));
-        // await httpContext.Response.WriteAsync(JsonSerializer.Serialize(response, new JsonSerializerOptions(){
-        //     PropertyNameCaseInsensitive = true,
-        //     PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-        // }));
     }
     private static int GetStatusCode(Exception exception) =>
         exception switch
         {
-            ValidationException => StatusCodes.Status422UnprocessableEntity,
+            DomainValidationException => StatusCodes.Status422UnprocessableEntity,
             _ => StatusCodes.Status500InternalServerError
         };
     private static string GetTitle(Exception exception) =>
         exception switch
         {
-            ValidationException valException => "Validation Failure",
+            DomainValidationException valException => "Validation Failure",
             ApplicationException applicationException => applicationException.Message,
             _ => "Server Error"
         };
@@ -55,18 +51,19 @@ internal sealed class ExceptionHandlingMiddleware : IMiddleware
     {
         //IReadOnlyDictionary<string, string[]> errors = null;
         IReadOnlyDictionary<string, string[]> errors = new Dictionary<string, string[]>();
-        if (exception is ValidationException validationException)
+        if (exception is DomainValidationException domainValidationException)
         {
-            errors = validationException.Errors.GroupBy(
-                x => x.PropertyName,
-                x => x.ErrorMessage,
-                (propertyName, errorMessages) => new
-                {
-                    Key = propertyName,
-                    Values = errorMessages.Distinct().ToArray()
-                })
-            .ToDictionary(x => x.Key, x => x.Values);;
+            errors = domainValidationException.Errors.GroupBy(
+                    x => x.PropertyName,
+                    x => x.ErrorMessage,
+                    (propertyName, errorMessages) => new
+                    {
+                        Key = propertyName,
+                        Values = errorMessages.Distinct().ToArray()
+                    })
+                .ToDictionary(x => x.Key, x => x.Values);;
         }
+        
         return errors;
     }
 }

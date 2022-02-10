@@ -5,6 +5,7 @@ using Health.Patient.Storage.Sql;
 namespace Health.Patient.Domain.Commands.CreatePatientCommand;
 
 [AuditLogPipeline]
+[ExceptionPipeline]
 [ValidationPipeline]
 [TransactionPipeline]
 public sealed class CreatePatientCommandHandler : ICommandHandler<CreatePatientCommand, Guid>

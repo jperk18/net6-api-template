@@ -6,7 +6,7 @@ public static class Decorators
 {
     public static bool IsDecorator(object x)
     {
-        return x is AuditLogPipelineAttribute || x is ValidationPipelineAttribute || x is TransactionPipelineAttribute;
+        return x is AuditLogPipelineAttribute || x is ValidationPipelineAttribute || x is TransactionPipelineAttribute || x is ExceptionPipelineAttribute;
     }
     
     public static Type ToDecorator(object attribute, Type assigningInterfaceType)
@@ -35,6 +35,14 @@ public static class Decorators
                 return typeof(TransactionCommandDecorator<,>);
             if (Handlers.IsQueryHandlerInterface(assigningInterfaceType))
                 throw new ArgumentException(attribute.ToString());
+        }
+
+        if (type == typeof(ExceptionPipelineAttribute))
+        {
+            if (Handlers.IsCommandHandlerInterface(assigningInterfaceType))
+                return typeof(ExceptionCommandDecorator<,>);
+            if (Handlers.IsQueryHandlerInterface(assigningInterfaceType))
+                return typeof(ExceptionQueryDecorator<,>);
         }
 
         // other attributes go here
