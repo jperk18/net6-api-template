@@ -1,5 +1,4 @@
 ﻿using Health.Patient.Domain.Commands.Core;
-using Health.Patient.Storage.Sql.Core;
 using Health.Patient.Storage.Sql.Core.Databases.PatientDb;
 using Microsoft.Extensions.Logging;
 
@@ -11,22 +10,16 @@ public sealed class TransactionCommandDecorator<TCommand, TOutput> : ICommandHan
     private readonly ILogger<TransactionCommandDecorator<TCommand, TOutput>> _logger;
     private readonly ICommandHandler<TCommand, TOutput> _handler;
     private readonly PatientDbContext _dbContext;
-    private readonly IStorageConfiguration _storageRegistrationConfiguration;
 
-    public TransactionCommandDecorator(ILogger<TransactionCommandDecorator<TCommand, TOutput>> logger,ICommandHandler<TCommand, TOutput> handler, PatientDbContext dbContext, IStorageConfiguration storageRegistrationConfiguration)
+    public TransactionCommandDecorator(ILogger<TransactionCommandDecorator<TCommand, TOutput>> logger,ICommandHandler<TCommand, TOutput> handler, PatientDbContext dbContext)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _handler = handler ?? throw new ArgumentNullException(nameof(handler));
         _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
-        _storageRegistrationConfiguration = storageRegistrationConfiguration ?? throw new ArgumentNullException(nameof(storageRegistrationConfiguration));
     }
 
     public async Task<TOutput> Handle(TCommand command)
     {
-        //Transactions not supported in in-memory databases.
-        if(_storageRegistrationConfiguration.PatientDatabase.DbType == SqlType.InMemory)
-            return await _handler.Handle(command);
-        
         await using var transaction = await _dbContext.Database.BeginTransactionAsync();
         try
         {

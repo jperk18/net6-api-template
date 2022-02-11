@@ -47,7 +47,7 @@ internal sealed class ExceptionHandlingMiddleware : IMiddleware
             ApplicationException applicationException => applicationException.Message,
             _ => "Server Error"
         };
-    private static IReadOnlyDictionary<string, string[]> GetErrors(Exception exception)
+    private IReadOnlyDictionary<string, string[]> GetErrors(Exception exception)
     {
         //IReadOnlyDictionary<string, string[]> errors = null;
         IReadOnlyDictionary<string, string[]> errors = new Dictionary<string, string[]>();
@@ -62,6 +62,14 @@ internal sealed class ExceptionHandlingMiddleware : IMiddleware
                         Values = errorMessages.Distinct().ToArray()
                     })
                 .ToDictionary(x => x.Key, x => x.Values);;
+        }
+        else
+        {
+            _logger.LogError("Unknown Server Error", exception);
+            errors = new Dictionary<string, string[]>()
+            {
+                {"Server_Error", new string[]{"Unknown server error occured. Please contact administrator is problem persists"} }
+            };
         }
         
         return errors;

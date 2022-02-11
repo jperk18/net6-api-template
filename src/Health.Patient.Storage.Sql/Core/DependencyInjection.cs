@@ -2,6 +2,7 @@
 using Health.Patient.Storage.Sql.Core.Repository.Core.Generic;
 using Health.Patient.Storage.Sql.Core.Repository.PatientDb;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Health.Patient.Storage.Sql.Core;
@@ -16,7 +17,8 @@ public static class DependencyInjection
         if (configuration.PatientDatabase.DbType == SqlType.InMemory)
         {
             services.AddDbContext<PatientDbContext>(options =>
-                options.UseInMemoryDatabase("PatientDb"));
+                options.UseInMemoryDatabase("PatientDb")
+                    .ConfigureWarnings(w => w.Ignore(InMemoryEventId.TransactionIgnoredWarning)));
         }
         else
         {

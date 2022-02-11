@@ -1,4 +1,5 @@
 ﻿using Health.Patient.Domain.Commands.Core;
+using Health.Patient.Domain.Core.Exceptions;
 using Health.Patient.Domain.Queries.Core;
 using Microsoft.Extensions.Logging;
 
@@ -18,16 +19,28 @@ public sealed class AuditLoggingCommandDecorator<TCommand, TOutput> : ICommandHa
 
     public async Task<TOutput> Handle(TCommand command)
     {
-        _logger.LogInformation($"Staring command: {command.GetType().Name}");
-        
+        _logger.LogInformation($"BEGIN: Command - {command.GetType().Name};");
+
         var watch = System.Diagnostics.Stopwatch.StartNew();
-        var response = await _handler.Handle(command);
-        watch.Stop();
-        
-        _logger.LogInformation($"Finished command: {command.GetType().Name}");
-        _logger.LogInformation($"Command {command.GetType().Name} runtime (ms): {watch.ElapsedMilliseconds}");
-        
-        return response;
+        try
+        {
+            var response = await _handler.Handle(command);
+            watch.Stop();
+            _logger.LogInformation($"COMPLETED: Command (Success) - {command.GetType().Name}; Runtime (ms): {watch.ElapsedMilliseconds}");
+            return response;
+        }
+        catch (DomainValidationException e)
+        {
+            watch.Stop();
+            _logger.LogWarning($"COMPLETED: Command (Warning) - {command.GetType().Name}; Runtime (ms): {watch.ElapsedMilliseconds}", e);
+            throw;
+        }
+        catch (Exception e)
+        {
+            watch.Stop();
+            _logger.LogError($"FAILED: Command - {command.GetType().Name}; Runtime (ms): {watch.ElapsedMilliseconds}", e);
+            throw;
+        }
     }
 }
 
@@ -44,16 +57,28 @@ public sealed class AuditLoggingQueryDecorator<TQuery, TResult> : IQueryHandler<
 
     public async Task<TResult> Handle(TQuery query)
     {
-        _logger.LogInformation($"Starting query: {query.GetType().Name}");
-        
-        var watch = System.Diagnostics.Stopwatch.StartNew();
-        var response = await _handler.Handle(query);
-        watch.Stop();
-        
-        _logger.LogInformation($"Finished query: {query.GetType().Name}");
-        _logger.LogInformation($"Query {query.GetType().Name} runtime (ms): {watch.ElapsedMilliseconds}");
+        _logger.LogInformation($"BEGIN: Query - {query.GetType().Name};");
 
-        return response;
+        var watch = System.Diagnostics.Stopwatch.StartNew();
+        try
+        {
+            var response = await _handler.Handle(query);
+            watch.Stop();
+            _logger.LogInformation($"COMPLETED: Query (Success) - {query.GetType().Name}; Runtime (ms): {watch.ElapsedMilliseconds}");
+            return response;
+        }
+        catch (DomainValidationException e)
+        {
+            watch.Stop();
+            _logger.LogWarning($"COMPLETED: Query (Warnings) - {query.GetType().Name}; Runtime (ms): {watch.ElapsedMilliseconds}", e);
+            throw;
+        }
+        catch (Exception e)
+        {
+            watch.Stop();
+            _logger.LogError($"FAILED: Query - {query.GetType().Name}; Runtime (ms): {watch.ElapsedMilliseconds}", e);
+            throw;
+        }
     }
 }
 

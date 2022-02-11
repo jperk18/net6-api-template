@@ -24,7 +24,7 @@ public class SqlDatabaseConfiguration
 
 public enum SqlType
 {
-    InMemory = 0,
-    Sql = 1,
-    Postgres = 2
+    Sql = 0,
+    Postgres = 1,
+    InMemory = 99
 }
