@@ -1,9 +1,13 @@
 ﻿using Health.Patient.Api.Requests.Interfaces;
 
-namespace Health.Patient.Api.Requests;
+namespace Health.Patient.Transport.Api.Models;
 
 public class CreatePatientApiRequest : IPatient
 {
+    public CreatePatientApiRequest()
+    {
+        
+    }
     public CreatePatientApiRequest(string firstName, string lastName, DateTime dateOfBirth)
     {
         FirstName = firstName;
@@ -11,7 +15,7 @@ public class CreatePatientApiRequest : IPatient
         DateOfBirth = dateOfBirth;
     }
 
-    public string FirstName { get; }
-    public string LastName { get; }
-    public DateTime DateOfBirth { get; }
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public DateTime DateOfBirth { get; set; }
 }

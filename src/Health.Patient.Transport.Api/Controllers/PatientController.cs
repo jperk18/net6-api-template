@@ -7,6 +7,7 @@ using Health.Patient.Domain.Queries.Core;
 using Health.Patient.Domain.Queries.GetAllPatientsQuery;
 using Health.Patient.Domain.Queries.GetPatientQuery;
 using Health.Patient.Transport.Api.Middleware;
+using Health.Patient.Transport.Api.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Health.Patient.Transport.Api.Controllers;
@@ -37,7 +38,7 @@ public class PatientController : ControllerBase
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(CreatePatientApiResponse))]
     [ProducesResponseType(StatusCodes.Status422UnprocessableEntity, Type = typeof(ApiGenericException))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> Register([FromBody] CreatePatientApiRequest request)
+    public async Task<IActionResult> RegisterPatient([FromBody] CreatePatientApiRequest request)
     {
         var response =
             await _createPatientHandler.Handle(new CreatePatientCommand(request.FirstName, request.LastName,
@@ -52,7 +53,7 @@ public class PatientController : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetPatient([FromQuery] GetPatientApiRequest request)
     {
-        var response = await _getPatientHandler.Handle(new GetPatientQuery() {PatientId = request.PatientId});
+        var response = await _getPatientHandler.Handle(new GetPatientQuery(request.PatientId));
         return Ok(new GetPatientApiResponse(response.Id, response.FirstName, response.LastName, response.DateOfBirth));
     }
     

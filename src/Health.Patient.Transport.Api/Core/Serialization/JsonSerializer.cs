@@ -2,12 +2,6 @@
 
 namespace Health.Patient.Transport.Api.Core.Serialization;
 
-public interface IJsonSerializer
-{
-    string Serialize(object value);
-    T? Deserialize<T>(string value);
-}
-
 public class JsonSerializer : IJsonSerializer
 {
     private readonly JsonSerializerOptions _settings = new JsonSerializerOptions()

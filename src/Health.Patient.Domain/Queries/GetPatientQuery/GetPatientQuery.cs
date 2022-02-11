@@ -5,5 +5,9 @@ namespace Health.Patient.Domain.Queries.GetPatientQuery;
 
 public sealed class GetPatientQuery : IQuery<PatientRecord>
 {
-    public Guid PatientId { get; set; }
+    public GetPatientQuery(Guid PatientId)
+    {
+        this.PatientId = PatientId;
+    }
+    public Guid PatientId { get; }
 }

@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Health.Patient.Domain", "He
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Health.Patient.Storage.Sql", "Health.Patient.Storage.Sql\Health.Patient.Storage.Sql.csproj", "{5819D630-20F5-4BFE-A271-9A2B236CFC9B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Health.Patient.Transport.Api.UnitTests", "Health.Patient.Transport.Api.UnitTests\Health.Patient.Transport.Api.UnitTests.csproj", "{C901639C-8131-4765-B623-3A3855B14C1D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{5819D630-20F5-4BFE-A271-9A2B236CFC9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5819D630-20F5-4BFE-A271-9A2B236CFC9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5819D630-20F5-4BFE-A271-9A2B236CFC9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C901639C-8131-4765-B623-3A3855B14C1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C901639C-8131-4765-B623-3A3855B14C1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C901639C-8131-4765-B623-3A3855B14C1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C901639C-8131-4765-B623-3A3855B14C1D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
