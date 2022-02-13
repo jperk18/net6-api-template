@@ -1,5 +1,4 @@
 using System.Net.Mime;
-using Health.Patient.Api.Requests;
 using Health.Patient.Domain.Commands.Core;
 using Health.Patient.Domain.Commands.CreatePatientCommand;
 using Health.Patient.Domain.Core.Models;

@@ -1,6 +1,6 @@
-﻿using Health.Patient.Api.Requests.Interfaces;
+﻿using Health.Patient.Transport.Api.Models.Interfaces;
 
-namespace Health.Patient.Api.Requests;
+namespace Health.Patient.Transport.Api.Models;
 
 public class GetPatientApiResponse : IPatient, IPatientIdentifer
 {

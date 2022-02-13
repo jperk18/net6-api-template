@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Bogus;
-using Health.Patient.Api.Requests;
 using Health.Patient.Domain.Commands.Core;
 using Health.Patient.Domain.Commands.CreatePatientCommand;
 using Health.Patient.Domain.Core.Exceptions;

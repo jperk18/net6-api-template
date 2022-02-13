@@ -5,13 +5,13 @@ using Microsoft.Extensions.Logging;
 
 namespace Health.Patient.Domain.Core.Decorators;
 
-public sealed class AuditLoggingCommandDecorator<TCommand, TOutput> : ICommandHandler<TCommand, TOutput>
+public sealed class LoggingCommandDecorator<TCommand, TOutput> : ICommandHandler<TCommand, TOutput>
     where TCommand : ICommand<TOutput>
 {
-    private readonly ILogger<AuditLoggingCommandDecorator<TCommand, TOutput>> _logger;
+    private readonly ILogger<LoggingCommandDecorator<TCommand, TOutput>> _logger;
     private readonly ICommandHandler<TCommand, TOutput> _handler;
 
-    public AuditLoggingCommandDecorator(ILogger<AuditLoggingCommandDecorator<TCommand, TOutput>> logger,ICommandHandler<TCommand, TOutput> handler)
+    public LoggingCommandDecorator(ILogger<LoggingCommandDecorator<TCommand, TOutput>> logger,ICommandHandler<TCommand, TOutput> handler)
     {
         _logger = logger;
         _handler = handler;
@@ -44,12 +44,12 @@ public sealed class AuditLoggingCommandDecorator<TCommand, TOutput> : ICommandHa
     }
 }
 
-public sealed class AuditLoggingQueryDecorator<TQuery, TResult> : IQueryHandler<TQuery, TResult> where TQuery : IQuery<TResult>
+public sealed class LoggingQueryDecorator<TQuery, TResult> : IQueryHandler<TQuery, TResult> where TQuery : IQuery<TResult>
 {
-    private readonly ILogger<AuditLoggingQueryDecorator<TQuery, TResult>> _logger;
+    private readonly ILogger<LoggingQueryDecorator<TQuery, TResult>> _logger;
     private readonly IQueryHandler<TQuery, TResult> _handler;
 
-    public AuditLoggingQueryDecorator(ILogger<AuditLoggingQueryDecorator<TQuery, TResult>> logger, IQueryHandler<TQuery, TResult> handler)
+    public LoggingQueryDecorator(ILogger<LoggingQueryDecorator<TQuery, TResult>> logger, IQueryHandler<TQuery, TResult> handler)
     {
         _logger = logger;
         _handler = handler;
@@ -83,9 +83,9 @@ public sealed class AuditLoggingQueryDecorator<TQuery, TResult> : IQueryHandler<
 }
 
 [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = true)]
-public sealed class AuditLogPipelineAttribute : Attribute
+public sealed class LoggingPipelineAttribute : Attribute
 {
-    public AuditLogPipelineAttribute()
+    public LoggingPipelineAttribute()
     {
     }
 }

@@ -1,4 +1,4 @@
-﻿using Health.Patient.Api.Requests.Interfaces;
+﻿using Health.Patient.Transport.Api.Models.Interfaces;
 
 namespace Health.Patient.Transport.Api.Models;
 

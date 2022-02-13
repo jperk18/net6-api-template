@@ -1,4 +1,4 @@
-﻿namespace Health.Patient.Api.Requests.Interfaces;
+﻿namespace Health.Patient.Transport.Api.Models.Interfaces;
 
 public interface IPatientIdentifer
 {
