@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using Health.Patient.Domain.Commands.Core;
 using Health.Patient.Domain.Core.Decorators;
+using Health.Patient.Domain.Core.Mediator;
 using Health.Patient.Domain.Queries.Core;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -19,6 +20,8 @@ public static class Handlers
         {
             AddHandler(services, type);
         }
+
+        services.AddTransient<IMediator, Mediator.Mediator>();
     }
 
     private static void AddHandler(IServiceCollection services, Type type)
@@ -113,7 +116,7 @@ public static class Handlers
 
         Type typeDefinition = type.GetGenericTypeDefinition();
 
-        return typeDefinition == typeof(ICommandHandler<,>) || typeDefinition == typeof(IQueryHandler<,>);
+        return typeDefinition == typeof(IAsyncCommandHandler<,>) || typeDefinition == typeof(IAsyncQueryHandler<,>);
     }
     
     public static bool IsCommandHandlerInterface(Type type)
@@ -123,7 +126,7 @@ public static class Handlers
 
         Type typeDefinition = type.GetGenericTypeDefinition();
 
-        return typeDefinition == typeof(ICommandHandler<,>);
+        return typeDefinition == typeof(IAsyncCommandHandler<,>);
     }
 
     public static bool IsQueryHandlerInterface(Type type)
@@ -133,6 +136,6 @@ public static class Handlers
 
         var typeDefinition = type.GetGenericTypeDefinition();
         
-        return type.GetGenericTypeDefinition() == typeof(IQueryHandler<,>);
+        return type.GetGenericTypeDefinition() == typeof(IAsyncQueryHandler<,>);
     }
 }

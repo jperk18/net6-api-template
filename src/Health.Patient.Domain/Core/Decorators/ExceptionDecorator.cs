@@ -6,13 +6,13 @@ using Microsoft.Extensions.Logging;
 
 namespace Health.Patient.Domain.Core.Decorators;
 
-public sealed class ExceptionCommandDecorator<TCommand, TOutput> : ICommandHandler<TCommand, TOutput>
+public sealed class ExceptionCommandDecorator<TCommand, TOutput> : IAsyncCommandHandler<TCommand, TOutput>
     where TCommand : ICommand<TOutput>
 {
     private readonly ILogger<ExceptionCommandDecorator<TCommand, TOutput>> _logger;
-    private readonly ICommandHandler<TCommand, TOutput> _handler;
+    private readonly IAsyncCommandHandler<TCommand, TOutput> _handler;
 
-    public ExceptionCommandDecorator(ILogger<ExceptionCommandDecorator<TCommand, TOutput>> logger,ICommandHandler<TCommand, TOutput> handler)
+    public ExceptionCommandDecorator(ILogger<ExceptionCommandDecorator<TCommand, TOutput>> logger,IAsyncCommandHandler<TCommand, TOutput> handler)
     {
         _logger = logger;
         _handler = handler;
@@ -31,12 +31,12 @@ public sealed class ExceptionCommandDecorator<TCommand, TOutput> : ICommandHandl
     }
 }
 
-public sealed class ExceptionQueryDecorator<TQuery, TResult> : IQueryHandler<TQuery, TResult> where TQuery : IQuery<TResult>
+public sealed class ExceptionQueryDecorator<TQuery, TResult> : IAsyncQueryHandler<TQuery, TResult> where TQuery : IQuery<TResult>
 {
     private readonly ILogger<ExceptionQueryDecorator<TQuery, TResult>> _logger;
-    private readonly IQueryHandler<TQuery, TResult> _handler;
+    private readonly IAsyncQueryHandler<TQuery, TResult> _handler;
 
-    public ExceptionQueryDecorator(ILogger<ExceptionQueryDecorator<TQuery, TResult>> logger, IQueryHandler<TQuery, TResult> handler)
+    public ExceptionQueryDecorator(ILogger<ExceptionQueryDecorator<TQuery, TResult>> logger, IAsyncQueryHandler<TQuery, TResult> handler)
     {
         _logger = logger;
         _handler = handler;

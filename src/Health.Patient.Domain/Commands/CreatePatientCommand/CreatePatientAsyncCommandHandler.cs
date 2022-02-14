@@ -8,10 +8,10 @@ namespace Health.Patient.Domain.Commands.CreatePatientCommand;
 [ExceptionPipeline]
 [ValidationPipeline]
 [TransactionPipeline]
-public sealed class CreatePatientCommandHandler : ICommandHandler<CreatePatientCommand, Guid>
+public sealed class CreatePatientAsyncCommandHandler : IAsyncCommandHandler<CreatePatientCommand, Guid>
 {
     private readonly IPatientUnitOfWork _unitOfWork;
-    public CreatePatientCommandHandler(IPatientUnitOfWork unitOfWork)
+    public CreatePatientAsyncCommandHandler(IPatientUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
     }

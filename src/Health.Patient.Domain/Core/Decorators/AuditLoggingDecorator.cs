@@ -5,13 +5,13 @@ using Microsoft.Extensions.Logging;
 
 namespace Health.Patient.Domain.Core.Decorators;
 
-public sealed class LoggingCommandDecorator<TCommand, TOutput> : ICommandHandler<TCommand, TOutput>
+public sealed class LoggingCommandDecorator<TCommand, TOutput> : IAsyncCommandHandler<TCommand, TOutput>
     where TCommand : ICommand<TOutput>
 {
     private readonly ILogger<LoggingCommandDecorator<TCommand, TOutput>> _logger;
-    private readonly ICommandHandler<TCommand, TOutput> _handler;
+    private readonly IAsyncCommandHandler<TCommand, TOutput> _handler;
 
-    public LoggingCommandDecorator(ILogger<LoggingCommandDecorator<TCommand, TOutput>> logger,ICommandHandler<TCommand, TOutput> handler)
+    public LoggingCommandDecorator(ILogger<LoggingCommandDecorator<TCommand, TOutput>> logger,IAsyncCommandHandler<TCommand, TOutput> handler)
     {
         _logger = logger;
         _handler = handler;
@@ -44,12 +44,12 @@ public sealed class LoggingCommandDecorator<TCommand, TOutput> : ICommandHandler
     }
 }
 
-public sealed class LoggingQueryDecorator<TQuery, TResult> : IQueryHandler<TQuery, TResult> where TQuery : IQuery<TResult>
+public sealed class LoggingQueryDecorator<TQuery, TResult> : IAsyncQueryHandler<TQuery, TResult> where TQuery : IQuery<TResult>
 {
     private readonly ILogger<LoggingQueryDecorator<TQuery, TResult>> _logger;
-    private readonly IQueryHandler<TQuery, TResult> _handler;
+    private readonly IAsyncQueryHandler<TQuery, TResult> _handler;
 
-    public LoggingQueryDecorator(ILogger<LoggingQueryDecorator<TQuery, TResult>> logger, IQueryHandler<TQuery, TResult> handler)
+    public LoggingQueryDecorator(ILogger<LoggingQueryDecorator<TQuery, TResult>> logger, IAsyncQueryHandler<TQuery, TResult> handler)
     {
         _logger = logger;
         _handler = handler;
