@@ -8,6 +8,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Health.Patient.Storage.Sql"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Health.Patient.Transport.Api.UnitTests", "Health.Patient.Transport.Api.UnitTests\Health.Patient.Transport.Api.UnitTests.csproj", "{C901639C-8131-4765-B623-3A3855B14C1D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Health.Patient.Domain.UnitTests", "Health.Patient.Domain.UnitTests\Health.Patient.Domain.UnitTests.csproj", "{F65EF4F6-3DED-4A68-8BFF-96AF223C62F9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Health.Patient.Transport.Api.IntegrationTests", "Health.Patient.Transport.Api.IntegrationTests\Health.Patient.Transport.Api.IntegrationTests.csproj", "{A1F01215-C599-4438-9D21-611CB7D48821}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +34,13 @@ Global
 		{C901639C-8131-4765-B623-3A3855B14C1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C901639C-8131-4765-B623-3A3855B14C1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C901639C-8131-4765-B623-3A3855B14C1D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F65EF4F6-3DED-4A68-8BFF-96AF223C62F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F65EF4F6-3DED-4A68-8BFF-96AF223C62F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F65EF4F6-3DED-4A68-8BFF-96AF223C62F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F65EF4F6-3DED-4A68-8BFF-96AF223C62F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1F01215-C599-4438-9D21-611CB7D48821}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1F01215-C599-4438-9D21-611CB7D48821}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1F01215-C599-4438-9D21-611CB7D48821}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1F01215-C599-4438-9D21-611CB7D48821}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

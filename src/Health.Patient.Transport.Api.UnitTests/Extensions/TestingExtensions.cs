@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Xunit;
 
 namespace Health.Patient.Transport.Api.UnitTests.Extensions;
@@ -16,17 +14,5 @@ public static class TestingExtensions
         var response = (T) objResult?.Value!;
         Assert.NotNull(response);
         return response;
-    }
-
-    public static void TestHandler(Func<Task> action)
-    {
-        try
-        {
-            action();
-        }
-        catch (Exception e)
-        {
-            Assert.True(false, e.Message);
-        }
     }
 }

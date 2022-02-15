@@ -4,6 +4,9 @@ namespace Health.Patient.Storage.Sql.Core.Databases.PatientDb.Models;
 
 public class Patient
 {
+    public Patient()
+    {
+    }
     public Patient(Guid id, string firstName, string lastName, DateTime dateOfBirth)
     {
         Id = id;

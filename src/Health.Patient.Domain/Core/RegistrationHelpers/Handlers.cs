@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using Health.Patient.Domain.Commands.Core;
 using Health.Patient.Domain.Core.Decorators;
-using Health.Patient.Domain.Core.Mediator;
+using Health.Patient.Domain.Mediator;
 using Health.Patient.Domain.Queries.Core;
 using Microsoft.Extensions.DependencyInjection;
 

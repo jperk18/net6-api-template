@@ -30,11 +30,6 @@ public static class DependencyInjection
                 services.AddDbContext<PatientDbContext>(options =>
                     options.UseSqlServer(configuration.PatientDatabase.ConnectionString));
             }
-            else if (configuration.PatientDatabase.DbType == SqlType.Postgres)
-            {
-                services.AddDbContext<PatientDbContext>(options =>
-                    options.UseNpgsql(configuration.PatientDatabase.ConnectionString));
-            }
         }
 
         services.AddTransient(typeof(IGenericQueryRepository<>), typeof(GenericQueryRepository<>));

@@ -4,8 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Bogus;
 using Health.Patient.Domain.Core.Exceptions;
-using Health.Patient.Domain.Core.Mediator;
 using Health.Patient.Domain.Core.Models;
+using Health.Patient.Domain.Mediator;
 using Health.Patient.Domain.Queries.GetPatientQuery;
 using Health.Patient.Transport.Api.Models;
 using Health.Patient.Transport.Api.UnitTests.Extensions;
@@ -28,61 +28,30 @@ public class GetPatientTests : IDisposable
         _faker = new Faker();
         _logger = new Mock<ILogger<Api.Controllers.PatientController>>();
         _mediator = new Mock<IMediator>();
+        _controller = new Api.Controllers.PatientController(_logger.Object, _mediator.Object);
     }
 
     [Theory]
     [MemberData(nameof(GetPatient_Success_Data))]
     public async Task GetPatient_Success(GetPatientApiRequest request)
     {
-        TestingExtensions.TestHandler(async () => {
-            //Arrange
-            _mediator
-                .Setup(x => x.SendAsync(It.IsAny<GetPatientQuery>()))
-                .ReturnsAsync(() => new PatientRecord(_faker.Name.FirstName(), _faker.Name.LastName(), _faker.Person.DateOfBirth, _faker.Random.Guid()));
-            
-            //Act
-            var result = await _controller.GetPatient(request);
-            
-            //Assert
-            var response = TestingExtensions.AssertResponseFromIActionResult<GetPatientApiResponse>(StatusCodes.Status200OK, result);
-            Assert.Equal(response.PatientId, response.PatientId);
-            Assert.Equal(response.FirstName, response.FirstName);
-            Assert.Equal(response.LastName, response.LastName);
-            Assert.Equal(response.DateOfBirth, response.DateOfBirth);
-        });
-    }
-    
-    [Theory]
-    [MemberData(nameof(GetPatient_Fail_EmptyData))]
-    public async Task GetPatient_Failed_ThrowsDomainValidation(GetPatientApiRequest request)
-    {
-        TestingExtensions.TestHandler(async () => {
-            //Arrange
-            _mediator
-                .Setup(x => x.SendAsync(It.IsAny<GetPatientQuery>()))
-                .ThrowsAsync(new DomainValidationException(_faker.Lorem.Text()));
-            
-            //Act
-            await Assert.ThrowsAsync<DomainValidationException>(async() => await _controller.GetPatient(request));
-        });
-    }
-    
-    [Fact]
-    public async Task GetPatient_Failed_ThrowsException()
-    {
-        TestingExtensions.TestHandler(async () => {
-            //Arrange
-            var request = new GetPatientApiRequest();
-            
-            _mediator
-                .Setup(x => x.SendAsync(It.IsAny<GetPatientQuery>()))
-                .ThrowsAsync(new Exception(_faker.Lorem.Text()));
-            
-            //Act
-            await Assert.ThrowsAsync<DomainValidationException>(async() => await _controller.GetPatient(request));
-        });
-    }
+        //Arrange
+        _mediator
+            .Setup(x => x.SendAsync(It.IsAny<GetPatientQuery>()))
+            .ReturnsAsync(() => new PatientRecord(_faker.Name.FirstName(), _faker.Name.LastName(),
+                _faker.Person.DateOfBirth, _faker.Random.Guid()));
 
+        //Act
+        var result = await _controller.GetPatient(request);
+
+        //Assert
+        var response =
+            TestingExtensions.AssertResponseFromIActionResult<GetPatientApiResponse>(StatusCodes.Status200OK, result);
+        Assert.Equal(response.PatientId, response.PatientId);
+        Assert.Equal(response.FirstName, response.FirstName);
+        Assert.Equal(response.LastName, response.LastName);
+        Assert.Equal(response.DateOfBirth, response.DateOfBirth);
+    }
     private static IEnumerable<object[]> GetPatient_Success_Data()
     {
         var faker = new Faker<GetPatientApiRequest>()
@@ -93,21 +62,34 @@ public class GetPatientTests : IDisposable
         return allData.Select(x => new object[] {x});
     }
 
-    private static IEnumerable<object[]> GetPatient_Fail_EmptyData()
+    [Fact]
+    public async Task GetPatient_Failed_ThrowsDomainValidation()
     {
-        var faker = new Faker<GetPatientApiRequest>()
-            .RuleFor(o => o.PatientId, f => f.Random.Guid());
+        //Arrange
+        var request = new GetPatientApiRequest();
+        var exceptionText = _faker.Lorem.Text();
+        _mediator
+            .Setup(x => x.SendAsync(It.IsAny<GetPatientQuery>()))
+            .ThrowsAsync(new DomainValidationException(exceptionText));
 
-        //One that doesn't exist for example
-        var data = faker.Generate();
+        //Act
+        var exception = await Assert.ThrowsAsync<DomainValidationException>(async () => await _controller.GetPatient(request));
+        Assert.Equal(exceptionText, exception.Message);
+    }
 
-        var allData = new List<GetPatientApiRequest>()
-        {
-            new GetPatientApiRequest(),
-            data
-        };
+    [Fact]
+    public async Task GetPatient_Failed_ThrowsException()
+    {
+        //Arrange
+        var request = new GetPatientApiRequest(){PatientId = _faker.Random.Guid()};
+        var exceptionText = _faker.Lorem.Text();
+        _mediator
+            .Setup(x => x.SendAsync(It.IsAny<GetPatientQuery>()))
+            .ThrowsAsync(new Exception(exceptionText));
 
-        return allData.Select(x => new object[] {x});
+        //Act
+        var exception = await Assert.ThrowsAsync<Exception>(async () => await _controller.GetPatient(request));
+        Assert.Equal(exceptionText, exception.Message);
     }
     
     public void Dispose()

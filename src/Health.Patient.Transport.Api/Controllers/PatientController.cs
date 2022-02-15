@@ -1,6 +1,6 @@
 using System.Net.Mime;
 using Health.Patient.Domain.Commands.CreatePatientCommand;
-using Health.Patient.Domain.Core.Mediator;
+using Health.Patient.Domain.Mediator;
 using Health.Patient.Domain.Queries.GetAllPatientsQuery;
 using Health.Patient.Domain.Queries.GetPatientQuery;
 using Health.Patient.Transport.Api.Middleware;
@@ -25,8 +25,9 @@ public class PatientController : ControllerBase
     [HttpPost()]
     [Consumes(MediaTypeNames.Application.Json)]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(CreatePatientApiResponse))]
-    [ProducesResponseType(StatusCodes.Status422UnprocessableEntity, Type = typeof(ApiGenericException))]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status422UnprocessableEntity, Type = typeof(ApiGenericValidationResultObject))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiGenericValidationResultObject))]
     public async Task<IActionResult> RegisterPatient([FromBody] CreatePatientApiRequest request)
     {
         var response = await _mediator.SendAsync(new CreatePatientCommand(request.FirstName, request.LastName,
@@ -38,7 +39,7 @@ public class PatientController : ControllerBase
 
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetPatientApiResponse))]
-    [ProducesResponseType(StatusCodes.Status422UnprocessableEntity, Type = typeof(ApiGenericException))]
+    [ProducesResponseType(StatusCodes.Status422UnprocessableEntity, Type = typeof(ApiGenericValidationResultObject))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetPatient([FromQuery] GetPatientApiRequest request)
     {
@@ -52,6 +53,6 @@ public class PatientController : ControllerBase
     public async Task<IActionResult> GetAllPatients()
     {
         var r = await _mediator.SendAsync(new GetAllPatientsQuery());
-        return Ok(r.Select(response => new GetPatientApiResponse(response.Id, response.FirstName, response.LastName, response.DateOfBirth)));
+        return Ok(r.Select(response => new GetPatientApiResponse(response.Id, response.FirstName, response.LastName, response.DateOfBirth)).ToArray());
     }
 }

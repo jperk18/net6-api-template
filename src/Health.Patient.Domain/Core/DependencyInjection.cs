@@ -1,8 +1,6 @@
 ﻿using FluentValidation.AspNetCore;
 using Health.Patient.Domain.Commands.CreatePatientCommand;
 using Health.Patient.Domain.Core.RegistrationHelpers;
-using Health.Patient.Domain.Core.Serialization;
-using Health.Patient.Domain.Core.Services;
 using Health.Patient.Storage.Sql.Core;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -18,8 +16,6 @@ public static class DependencyInjection
         services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreatePatientCommandValidator>());
         services.AddHandlers();
         services.AddSingleton(config);
-        services.AddSingleton<IJsonSerializer, JsonSerializer>();
-        services.AddTransient<IRetrievalService, RetrievalService>();
         
         //Add Dependant Database services
         services.AddStorageServices(config.StorageConfiguration);

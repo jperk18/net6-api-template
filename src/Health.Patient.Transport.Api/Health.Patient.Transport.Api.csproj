@@ -15,4 +15,7 @@
       <ProjectReference Include="..\Health.Patient.Domain\Health.Patient.Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+        <InternalsVisibleTo Include="Health.Patient.Transport.Api.IntegrationTests" />
+    </ItemGroup>
 </Project>

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Bogus;
 using Health.Patient.Domain.Core.Exceptions;
-using Health.Patient.Domain.Core.Mediator;
 using Health.Patient.Domain.Core.Models;
+using Health.Patient.Domain.Mediator;
 using Health.Patient.Domain.Queries.GetAllPatientsQuery;
 using Health.Patient.Transport.Api.Models;
 using Health.Patient.Transport.Api.UnitTests.Extensions;
@@ -27,48 +27,60 @@ public class GetAllPatientsTests : IDisposable
         _faker = new Faker();
         _logger = new Mock<ILogger<Api.Controllers.PatientController>>();
         _mediator = new Mock<IMediator>();
+        _controller = new Api.Controllers.PatientController(_logger.Object, _mediator.Object);
     }
 
     [Fact]
     public async Task GetAllPatients_Success()
     {
-        TestingExtensions.TestHandler(async () => {
-            //Arrange
-            var _patient = new PatientRecord(_faker.Name.FirstName(), _faker.Name.LastName(), _faker.Person.DateOfBirth,
-                _faker.Random.Guid());
-            _mediator
-                .Setup(x => x.SendAsync(It.IsAny<GetAllPatientsQuery>()))
-                .ReturnsAsync(() => new List<PatientRecord>(){ _patient });
-            
-            //Act
-            var result = await _controller.GetAllPatients();
-            
-            //Assert
-            var response = TestingExtensions.AssertResponseFromIActionResult<GetPatientApiResponse[]>(StatusCodes.Status200OK, result);
-            Assert.Single(response);
-            Assert.Equal(response[0].PatientId, response[0].PatientId);
-            Assert.Equal(response[0].FirstName, response[0].FirstName);
-            Assert.Equal(response[0].LastName, response[0].LastName);
-            Assert.Equal(response[0].DateOfBirth, response[0].DateOfBirth);
-        });
+        //Arrange
+        var _patient = new PatientRecord(_faker.Name.FirstName(), _faker.Name.LastName(), _faker.Person.DateOfBirth,
+            _faker.Random.Guid());
+        _mediator
+            .Setup(x => x.SendAsync(It.IsAny<GetAllPatientsQuery>()))
+            .ReturnsAsync(() => new List<PatientRecord>() {_patient});
+
+        //Act
+        var result = await _controller.GetAllPatients();
+
+        //Assert
+        var response =
+            TestingExtensions.AssertResponseFromIActionResult<GetPatientApiResponse[]>(StatusCodes.Status200OK, result);
+        Assert.Single(response);
+        Assert.Equal(response[0].PatientId, response[0].PatientId);
+        Assert.Equal(response[0].FirstName, response[0].FirstName);
+        Assert.Equal(response[0].LastName, response[0].LastName);
+        Assert.Equal(response[0].DateOfBirth, response[0].DateOfBirth);
     }
-    
+
     [Fact]
     public async Task GetPatient_Failed_ThrowsException()
     {
-        TestingExtensions.TestHandler(async () => {
-            //Arrange
-            var request = new GetPatientApiRequest();
-            
-            _mediator
-                .Setup(x => x.SendAsync(It.IsAny<GetAllPatientsQuery>()))
-                .ThrowsAsync(new Exception(_faker.Lorem.Text()));
-            
-            //Act
-            await Assert.ThrowsAsync<DomainValidationException>(async() => await _controller.GetAllPatients());
-        });
+        //Arrange
+        var exceptionText = _faker.Lorem.Text();
+        _mediator
+            .Setup(x => x.SendAsync(It.IsAny<GetAllPatientsQuery>()))
+            .ThrowsAsync(new Exception(exceptionText));
+
+        //Act
+        var exception = await Assert.ThrowsAsync<Exception>(async () => await _controller.GetAllPatients());
+        Assert.Equal(exceptionText, exception.Message);
     }
 
+    [Fact]
+    public async Task GetPatient_Failed_ThrowsDomainValidationException()
+    {
+        //Arrange
+        var exceptionText = _faker.Lorem.Text();
+        _mediator
+            .Setup(x => x.SendAsync(It.IsAny<GetAllPatientsQuery>()))
+            .ThrowsAsync(new DomainValidationException(exceptionText));
+
+        //Act
+        var exception = await Assert.ThrowsAsync<DomainValidationException>(async () => await _controller.GetAllPatients());
+        Assert.Equal(exceptionText, exception.Message);
+    }
+    
     public void Dispose()
     {
     }
