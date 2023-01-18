@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http.Json;
@@ -15,7 +16,7 @@ namespace Health.Patient.Transport.Api.IntegrationTests.GetPatient;
 
 public class GetPatientTests
 {
-    private readonly string apiUri = "/api/Patient";
+    private const string ApiUri = "/api/Patient";
     private readonly Faker _faker;
     
     public GetPatientTests()
@@ -23,7 +24,7 @@ public class GetPatientTests
         _faker = new Faker();
     }
     
-    private string BuildUri(GetPatientApiRequest req) => QueryHelpers.AddQueryString("/api/Patient", new Dictionary<string, string>()
+    private string BuildUri(GetPatientApiRequest req) => QueryHelpers.AddQueryString(ApiUri, new Dictionary<string, string>()
     {
         {"PatientId", req.PatientId.ToString() }
     }!);
@@ -35,8 +36,8 @@ public class GetPatientTests
         var seed = new GenerateValidPatientsDataSeed(_faker.Random.Number(1, 50));
         var application = new PatientApiApplication(new List<IDataSeed>(){ seed });
         var client = application.CreateClient();
-        var patient = seed.Patients.First();
-        var request = new GetPatientApiRequest(){ PatientId = patient.Id };
+        var patient = seed.Patients?.First();
+        var request = new GetPatientApiRequest(patient!.Id);
         
         //Act
         var response = await client.GetAsync(BuildUri(request));
@@ -47,10 +48,10 @@ public class GetPatientTests
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         var result = await response.Content.ReadFromJsonAsync<GetPatientApiResponse>();
         Assert.NotNull(result);
-        Assert.Equal(patient.Id, result.PatientId);
-        Assert.Equal(patient.FirstName, result.FirstName);
-        Assert.Equal(patient.LastName, result.LastName);
-        Assert.Equal(patient.DateOfBirth, result.DateOfBirth);
+        Assert.Equal(patient.Id, result!.PatientId);
+        Assert.Equal(patient.FirstName, result!.FirstName);
+        Assert.Equal(patient.LastName, result!.LastName);
+        Assert.Equal(patient.DateOfBirth, result!.DateOfBirth);
     }
     
     [Fact]
@@ -60,7 +61,7 @@ public class GetPatientTests
         var seed = new GenerateValidPatientsDataSeed(_faker.Random.Number(1, 50));
         var application = new PatientApiApplication(new List<IDataSeed>(){ seed });
         var client = application.CreateClient();
-        var request = new GetPatientApiRequest(){ PatientId = _faker.Random.Guid() };
+        var request = new GetPatientApiRequest(_faker.Random.Guid());
         
         //Act
         var response = await client.GetAsync(BuildUri(request));
@@ -70,7 +71,7 @@ public class GetPatientTests
         Assert.Equal(HttpStatusCode.UnprocessableEntity, response.StatusCode);
         var result = await response.Content.ReadFromJsonAsync<ApiGenericValidationResultObject>();
         Assert.NotNull(result);
-        Assert.Equal("Record does not exist", result.Detail);
+        Assert.Equal("Record does not exist", result!.Detail);
     }
     
     [Fact]
@@ -80,7 +81,7 @@ public class GetPatientTests
         var seed = new GenerateValidPatientsDataSeed(_faker.Random.Number(1, 50));
         var application = new PatientApiApplication(new List<IDataSeed>(){ seed });
         var client = application.CreateClient();
-        var request = new GetPatientApiRequest();
+        var request = new GetPatientApiRequest(Guid.Empty);
         
         //Act
         var response = await client.GetAsync(BuildUri(request));
@@ -90,7 +91,7 @@ public class GetPatientTests
         Assert.Equal(HttpStatusCode.UnprocessableEntity, response.StatusCode);
         var result = await response.Content.ReadFromJsonAsync<ApiGenericValidationResultObject>();
         Assert.NotNull(result);
-        var error = Assert.Single(result.Errors);
+        var error = Assert.Single(result!.Errors);
         Assert.Equal(nameof(request.PatientId), error.Key);
     }
 }

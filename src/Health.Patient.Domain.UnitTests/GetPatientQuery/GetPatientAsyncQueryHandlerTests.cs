@@ -56,7 +56,7 @@ public class GetPatientAsyncQueryHandlerTests
         var exceptionMessage = "Record does not exist";
         _unitOfWork
             .Setup(x => x.Patients.GetById(It.IsAny<Guid>()))
-            .ReturnsAsync((Storage.Sql.Core.Databases.PatientDb.Models.Patient)null);
+            .ReturnsAsync((Storage.Sql.Core.Databases.PatientDb.Models.Patient)null!);
         
         var request = new Queries.GetPatientQuery.GetPatientQuery(person.Id);
 

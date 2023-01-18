@@ -4,9 +4,8 @@ namespace Health.Patient.Storage.Sql.Core.Databases.PatientDb.Models;
 
 public class Patient
 {
-    public Patient()
-    {
-    }
+    public Patient() { }
+    
     public Patient(Guid id, string firstName, string lastName, DateTime dateOfBirth)
     {
         Id = id;
@@ -17,7 +16,7 @@ public class Patient
 
     [Key]
     public Guid Id { get; set; }
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
+    public string FirstName { get; set; } = null!;
+    public string LastName { get; set; } = null!;
     public DateTime DateOfBirth { get; set; }
 }

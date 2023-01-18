@@ -1,11 +1,35 @@
 ﻿namespace Health.Patient.Domain.Core.Exceptions.Models;
 
-public class ValidationFailure
+public interface IValidationFailure
 {
-    public ValidationFailure()
-    {
-        
-    }
+    /// <summary>
+    /// The name of the property.
+    /// </summary>
+    string? PropertyName { get; set; }
+
+    /// <summary>
+    /// The error message
+    /// </summary>
+    string ErrorMessage { get; set; }
+
+    /// <summary>
+    /// The property value that caused the failure.
+    /// </summary>
+    object? AttemptedValue { get; set; }
+    
+    /// <summary>
+    /// Custom severity level associated with the failure.
+    /// </summary>
+    Severity Severity { get; set; }
+
+    /// <summary>
+    /// Gets or sets the error code.
+    /// </summary>
+    string? ErrorCode { get; set; }
+}
+
+public class ValidationFailure : IValidationFailure
+{
     public ValidationFailure(string errorMessage)
     {
         ErrorMessage = errorMessage;
@@ -34,5 +58,5 @@ public class ValidationFailure
     /// <summary>
     /// Gets or sets the error code.
     /// </summary>
-    public string ErrorCode { get; set; }
+    public string? ErrorCode { get; set; }
 }

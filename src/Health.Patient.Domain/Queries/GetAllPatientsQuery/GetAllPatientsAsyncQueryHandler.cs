@@ -1,6 +1,6 @@
-﻿using Health.Patient.Domain.Core.Decorators;
-using Health.Patient.Domain.Core.Models;
-using Health.Patient.Domain.Queries.Core;
+﻿using Health.Patient.Domain.Core.Mediator.Decorators;
+using Health.Patient.Domain.Core.Mediator.Queries;
+using Health.Patient.Domain.Models;
 using Health.Patient.Storage;
 using Health.Patient.Storage.Sql;
 

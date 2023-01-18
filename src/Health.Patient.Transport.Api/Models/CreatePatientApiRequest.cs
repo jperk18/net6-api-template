@@ -1,13 +1,11 @@
-﻿using Health.Patient.Transport.Api.Models.Interfaces;
+﻿using System.Text.Json.Serialization;
+using Health.Patient.Transport.Api.Models.Interfaces;
 
 namespace Health.Patient.Transport.Api.Models;
 
 public class CreatePatientApiRequest : IPatient
 {
-    public CreatePatientApiRequest()
-    {
-        
-    }
+    [JsonConstructor]
     public CreatePatientApiRequest(string firstName, string lastName, DateTime dateOfBirth)
     {
         FirstName = firstName;

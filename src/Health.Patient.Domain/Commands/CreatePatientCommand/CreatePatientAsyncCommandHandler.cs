@@ -1,5 +1,5 @@
-﻿using Health.Patient.Domain.Commands.Core;
-using Health.Patient.Domain.Core.Decorators;
+﻿using Health.Patient.Domain.Core.Mediator.Commands;
+using Health.Patient.Domain.Core.Mediator.Decorators;
 using Health.Patient.Storage.Sql;
 
 namespace Health.Patient.Domain.Commands.CreatePatientCommand;

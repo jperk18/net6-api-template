@@ -1,6 +1,6 @@
-﻿using Health.Patient.Domain.Core.Decorators;
+﻿using Health.Patient.Domain.Core.Mediator.Decorators;
 
-namespace Health.Patient.Domain.Core.RegistrationHelpers;
+namespace Health.Patient.Domain.Core.Mediator.RegistrationHelpers;
 
 public static class Decorators
 {

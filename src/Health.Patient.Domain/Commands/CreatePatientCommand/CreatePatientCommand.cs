@@ -1,4 +1,4 @@
-﻿using Health.Patient.Domain.Commands.Core;
+﻿using Health.Patient.Domain.Core.Mediator.Commands;
 
 namespace Health.Patient.Domain.Commands.CreatePatientCommand;
 

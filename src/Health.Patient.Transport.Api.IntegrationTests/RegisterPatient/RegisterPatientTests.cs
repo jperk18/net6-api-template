@@ -30,7 +30,7 @@ public class RegisterPatientTests
         //Arrange
         var application = new PatientApiApplication();
         var client = application.CreateClient();
-        var request = new CreatePatientApiRequest(){ FirstName = _faker.Person.FirstName, LastName = _faker.Person.LastName, DateOfBirth = _faker.Person.DateOfBirth };
+        var request = new CreatePatientApiRequest(_faker.Person.FirstName, _faker.Person.LastName, _faker.Person.DateOfBirth);
         
         //Act
         var buffer = Encoding.UTF8.GetBytes(Core.Extensions.JsonSerializer.Serialize(request));
@@ -52,7 +52,7 @@ public class RegisterPatientTests
         //Arrange
         var application = new PatientApiApplication();
         var client = application.CreateClient();
-        var request = new CreatePatientApiRequest(){ FirstName = string.Empty, LastName = string.Empty, DateOfBirth = _faker.Person.DateOfBirth };
+        var request = new CreatePatientApiRequest(string.Empty, string.Empty, _faker.Person.DateOfBirth);
         
         //Act
         var buffer = Encoding.UTF8.GetBytes(Core.Extensions.JsonSerializer.Serialize(request));
@@ -65,7 +65,7 @@ public class RegisterPatientTests
         Assert.Equal(HttpStatusCode.UnprocessableEntity, response.StatusCode);
         var result = await response.Content.ReadFromJsonAsync<ApiGenericValidationResultObject>();
         Assert.NotNull(result);
-        Assert.NotNull(result.Errors);
+        Assert.NotNull(result!.Errors);
         Assert.Equal(2, result.Errors.Count);
         Assert.Contains(result.Errors, f => f.Key == nameof(request.FirstName));
         Assert.Contains(result.Errors, f => f.Key == nameof(request.LastName));
@@ -77,7 +77,7 @@ public class RegisterPatientTests
         //Arrange
         var application = new PatientApiApplication();
         var client = application.CreateClient();
-        var request = new CreatePatientApiRequest(){ FirstName = null, LastName = string.Empty, DateOfBirth = _faker.Person.DateOfBirth };
+        var request = new CreatePatientApiRequest(null!, string.Empty, _faker.Person.DateOfBirth);
         
         //Act
         var buffer = Encoding.UTF8.GetBytes(Core.Extensions.JsonSerializer.Serialize(request));

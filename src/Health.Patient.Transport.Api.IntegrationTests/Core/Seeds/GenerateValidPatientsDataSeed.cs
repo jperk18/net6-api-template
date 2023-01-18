@@ -13,7 +13,7 @@ public class GenerateValidPatientsDataSeed : IDataSeed
         _count = count;
     }
 
-    public IEnumerable<Storage.Sql.Core.Databases.PatientDb.Models.Patient> Patients { get; private set; }
+    public IEnumerable<Storage.Sql.Core.Databases.PatientDb.Models.Patient>? Patients { get; private set; }
     
     public void Populate(PatientDbContext dbContext)
     {

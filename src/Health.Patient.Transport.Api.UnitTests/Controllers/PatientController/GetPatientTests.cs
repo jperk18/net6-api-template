@@ -4,8 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Bogus;
 using Health.Patient.Domain.Core.Exceptions;
-using Health.Patient.Domain.Core.Models;
-using Health.Patient.Domain.Mediator;
+using Health.Patient.Domain.Core.Mediator;
+using Health.Patient.Domain.Models;
 using Health.Patient.Domain.Queries.GetPatientQuery;
 using Health.Patient.Transport.Api.Models;
 using Health.Patient.Transport.Api.UnitTests.Extensions;
@@ -55,7 +55,7 @@ public class GetPatientTests : IDisposable
     private static IEnumerable<object[]> GetPatient_Success_Data()
     {
         var faker = new Faker<GetPatientApiRequest>()
-            .RuleFor(o => o.PatientId, f => f.Random.Guid());
+            .CustomInstantiator(f => new GetPatientApiRequest(f.Random.Guid()));
 
         var allData = faker.Generate(5);
 
@@ -66,7 +66,7 @@ public class GetPatientTests : IDisposable
     public async Task GetPatient_Failed_ThrowsDomainValidation()
     {
         //Arrange
-        var request = new GetPatientApiRequest();
+        var request = new GetPatientApiRequest(_faker.Random.Guid());
         var exceptionText = _faker.Lorem.Text();
         _mediator
             .Setup(x => x.SendAsync(It.IsAny<GetPatientQuery>()))
@@ -81,7 +81,7 @@ public class GetPatientTests : IDisposable
     public async Task GetPatient_Failed_ThrowsException()
     {
         //Arrange
-        var request = new GetPatientApiRequest(){PatientId = _faker.Random.Guid()};
+        var request = new GetPatientApiRequest(_faker.Random.Guid());
         var exceptionText = _faker.Lorem.Text();
         _mediator
             .Setup(x => x.SendAsync(It.IsAny<GetPatientQuery>()))

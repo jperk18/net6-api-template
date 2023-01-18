@@ -1,6 +1,6 @@
 ﻿using FluentValidation.AspNetCore;
 using Health.Patient.Domain.Commands.CreatePatientCommand;
-using Health.Patient.Domain.Core.RegistrationHelpers;
+using Health.Patient.Domain.Core.Mediator.RegistrationHelpers;
 using Health.Patient.Storage.Sql.Core;
 using Microsoft.Extensions.DependencyInjection;
 

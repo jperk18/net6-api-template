@@ -1,4 +1,4 @@
-﻿namespace Health.Patient.Domain.Core.Models.Interfaces;
+﻿namespace Health.Patient.Domain.Models.Interfaces;
 
 public interface IPatientIdentifer
 {

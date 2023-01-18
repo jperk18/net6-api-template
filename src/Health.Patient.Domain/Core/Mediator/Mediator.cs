@@ -1,7 +1,7 @@
-﻿using Health.Patient.Domain.Commands.Core;
-using Health.Patient.Domain.Queries.Core;
+﻿using Health.Patient.Domain.Core.Mediator.Commands;
+using Health.Patient.Domain.Core.Mediator.Queries;
 
-namespace Health.Patient.Domain.Mediator;
+namespace Health.Patient.Domain.Core.Mediator;
 
 public sealed class Mediator : IMediator
 {
@@ -17,8 +17,8 @@ public sealed class Mediator : IMediator
         var type = typeof(IAsyncCommandHandler<,>);
         var argTypes = new Type[] {command.GetType(), typeof(TOutput)};
         var handlerType = type.MakeGenericType(argTypes);
-        dynamic handler = _serviceProvider.GetService(handlerType);
-        TOutput result = await handler.Handle((dynamic) command);
+        dynamic handler = _serviceProvider.GetService(handlerType) ?? throw new InvalidOperationException("No handler found for command");
+        TOutput result = await handler?.Handle((dynamic) command)!;
         return result;
     }
     
@@ -27,8 +27,8 @@ public sealed class Mediator : IMediator
         var type = typeof(IAsyncQueryHandler<,>);
         var argTypes = new Type[] {query.GetType(), typeof(TResult)};
         var handlerType = type.MakeGenericType(argTypes);
-        dynamic handler = _serviceProvider.GetService(handlerType);
-        TResult result = await handler.Handle((dynamic) query);
+        dynamic handler = _serviceProvider.GetService(handlerType) ?? throw new InvalidOperationException("No handler found for query");
+        TResult result = await handler?.Handle((dynamic) query)!;
         return result;
     } 
 }

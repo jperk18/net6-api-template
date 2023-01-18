@@ -1,11 +1,9 @@
 ﻿using System.Reflection;
-using Health.Patient.Domain.Commands.Core;
-using Health.Patient.Domain.Core.Decorators;
-using Health.Patient.Domain.Mediator;
-using Health.Patient.Domain.Queries.Core;
+using Health.Patient.Domain.Core.Mediator.Commands;
+using Health.Patient.Domain.Core.Mediator.Queries;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Health.Patient.Domain.Core.RegistrationHelpers;
+namespace Health.Patient.Domain.Core.Mediator.RegistrationHelpers;
 
 public static class Handlers
 {
@@ -21,7 +19,7 @@ public static class Handlers
             AddHandler(services, type);
         }
 
-        services.AddTransient<IMediator, Mediator.Mediator>();
+        services.AddTransient<IMediator, Core.Mediator.Mediator>();
     }
 
     private static void AddHandler(IServiceCollection services, Type type)

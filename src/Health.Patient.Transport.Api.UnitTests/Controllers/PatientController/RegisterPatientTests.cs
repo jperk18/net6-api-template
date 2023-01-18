@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Bogus;
 using Health.Patient.Domain.Commands.CreatePatientCommand;
 using Health.Patient.Domain.Core.Exceptions;
-using Health.Patient.Domain.Mediator;
+using Health.Patient.Domain.Core.Mediator;
 using Health.Patient.Transport.Api.Models;
 using Health.Patient.Transport.Api.UnitTests.Extensions;
 using Microsoft.AspNetCore.Http;
@@ -52,11 +52,9 @@ public class RegisterPatientTests : IDisposable
     private static IEnumerable<object[]> RegisterPatient_Success_Data()
     {
         var faker = new Faker<CreatePatientApiRequest>()
-            .RuleFor(o => o.FirstName, f => f.Person.FirstName)
-            .RuleFor(o => o.LastName, f => f.Person.LastName)
-            .RuleFor(o => o.DateOfBirth, f => f.Person.DateOfBirth);
+                .CustomInstantiator(x => new CreatePatientApiRequest(x.Person.FirstName, x.Person.LastName, x.Person.DateOfBirth))
         ;
-        var allData = faker.Generate(5);
+        var allData = faker.Generate(5).Select(x => (CreatePatientApiRequest)x);
 
         return allData.Select(x => new object[] {x});
     }

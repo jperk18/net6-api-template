@@ -8,7 +8,6 @@ public static class JsonSerializer
     {
         WriteIndented = false,
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-        IgnoreNullValues = false
     };
     
     public static string Serialize(object value)

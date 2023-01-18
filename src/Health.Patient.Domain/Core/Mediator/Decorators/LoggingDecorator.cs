@@ -1,9 +1,9 @@
-﻿using Health.Patient.Domain.Commands.Core;
-using Health.Patient.Domain.Core.Exceptions;
-using Health.Patient.Domain.Queries.Core;
+﻿using Health.Patient.Domain.Core.Exceptions;
+using Health.Patient.Domain.Core.Mediator.Commands;
+using Health.Patient.Domain.Core.Mediator.Queries;
 using Microsoft.Extensions.Logging;
 
-namespace Health.Patient.Domain.Core.Decorators;
+namespace Health.Patient.Domain.Core.Mediator.Decorators;
 
 public sealed class LoggingCommandDecorator<TCommand, TOutput> : IAsyncCommandHandler<TCommand, TOutput>
     where TCommand : ICommand<TOutput>

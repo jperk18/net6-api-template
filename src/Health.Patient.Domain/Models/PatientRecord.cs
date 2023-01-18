@@ -1,6 +1,6 @@
-﻿using Health.Patient.Domain.Core.Models.Interfaces;
+﻿using Health.Patient.Domain.Models.Interfaces;
 
-namespace Health.Patient.Domain.Core.Models;
+namespace Health.Patient.Domain.Models;
 
 public class PatientRecord : IPatientRecord
 {

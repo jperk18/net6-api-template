@@ -1,4 +1,4 @@
-﻿namespace Health.Patient.Domain.Commands.Core;
+﻿namespace Health.Patient.Domain.Core.Mediator.Commands;
 
 public interface IAsyncCommandHandler<TCommand, TOutput> where TCommand : ICommand<TOutput>
 {

@@ -50,27 +50,26 @@ internal sealed class ExceptionHandlingMiddleware : IMiddleware
     private IReadOnlyDictionary<string, string[]> GetErrors(Exception exception)
     {
         //IReadOnlyDictionary<string, string[]> errors = null;
-        IReadOnlyDictionary<string, string[]> errors = new Dictionary<string, string[]>();
+        Dictionary<string, string[]> errors = new Dictionary<string, string[]>()
+        {
+            {"Server_Error", new string[]{"Unknown server error occured. Please contact administrator is problem persists"} }
+        };
+        
         if (exception is DomainValidationException domainValidationException)
         {
-            errors = domainValidationException.Errors.GroupBy(
-                    x => x.PropertyName,
-                    x => x.ErrorMessage,
-                    (propertyName, errorMessages) => new
-                    {
-                        Key = propertyName,
-                        Values = errorMessages.Distinct().ToArray()
-                    })
-                .ToDictionary(x => x.Key, x => x.Values);;
+            if (domainValidationException.Errors != null)
+                errors = domainValidationException.Errors.GroupBy(
+                        x => x.PropertyName,
+                        x => x.ErrorMessage,
+                        (propertyName, errorMessages) => new
+                        {
+                            Key = propertyName,
+                            Values = errorMessages.Distinct().ToArray()
+                        })
+                    .ToDictionary(x => x.Key!, x => x.Values);
         }
         else
-        {
             _logger.LogError("Unknown Server Error", exception);
-            errors = new Dictionary<string, string[]>()
-            {
-                {"Server_Error", new string[]{"Unknown server error occured. Please contact administrator is problem persists"} }
-            };
-        }
         
         return errors;
     }

@@ -1,7 +1,7 @@
-﻿using Health.Patient.Domain.Commands.Core;
-using Health.Patient.Domain.Queries.Core;
+﻿using Health.Patient.Domain.Core.Mediator.Commands;
+using Health.Patient.Domain.Core.Mediator.Queries;
 
-namespace Health.Patient.Domain.Mediator;
+namespace Health.Patient.Domain.Core.Mediator;
 
 public interface IMediator
 {

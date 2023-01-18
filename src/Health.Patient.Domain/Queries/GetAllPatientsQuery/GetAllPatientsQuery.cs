@@ -1,5 +1,5 @@
-﻿using Health.Patient.Domain.Core.Models;
-using Health.Patient.Domain.Queries.Core;
+﻿using Health.Patient.Domain.Core.Mediator.Queries;
+using Health.Patient.Domain.Models;
 
 namespace Health.Patient.Domain.Queries.GetAllPatientsQuery;
 

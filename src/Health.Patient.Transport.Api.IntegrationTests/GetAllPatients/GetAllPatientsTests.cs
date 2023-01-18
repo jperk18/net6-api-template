@@ -40,7 +40,7 @@ public class GetAllPatientsTests
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
         var result = await response.Content.ReadFromJsonAsync<List<GetPatientApiResponse>>();
-        Assert.Equal(seed.Patients.Count(), result.Count);
-        Assert.True(!result.Select(x => x.PatientId).Except(seed.Patients.Select(c => c.Id)).Any());
+        Assert.Equal(seed.Patients!.Count(), result!.Count);
+        Assert.True(!result.Select(x => x.PatientId).Except(seed.Patients!.Select(c => c.Id)).Any());
     }
 }

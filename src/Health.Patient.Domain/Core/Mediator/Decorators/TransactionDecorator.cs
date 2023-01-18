@@ -1,8 +1,8 @@
-﻿using Health.Patient.Domain.Commands.Core;
+﻿using Health.Patient.Domain.Core.Mediator.Commands;
 using Health.Patient.Storage.Sql.Core.Databases.PatientDb;
 using Microsoft.Extensions.Logging;
 
-namespace Health.Patient.Domain.Core.Decorators;
+namespace Health.Patient.Domain.Core.Mediator.Decorators;
 
 public sealed class TransactionCommandDecorator<TCommand, TOutput> : IAsyncCommandHandler<TCommand, TOutput>
     where TCommand : ICommand<TOutput>

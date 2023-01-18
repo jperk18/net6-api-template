@@ -1,6 +1,6 @@
 using System.Net.Mime;
 using Health.Patient.Domain.Commands.CreatePatientCommand;
-using Health.Patient.Domain.Mediator;
+using Health.Patient.Domain.Core.Mediator;
 using Health.Patient.Domain.Queries.GetAllPatientsQuery;
 using Health.Patient.Domain.Queries.GetPatientQuery;
 using Health.Patient.Transport.Api.Middleware;

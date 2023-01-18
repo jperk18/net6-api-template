@@ -10,7 +10,7 @@ public static class TestingExtensions
         Assert.NotNull(result);
         var objResult = result as ObjectResult;
         Assert.NotNull(objResult);
-        Assert.Equal(statusCode, objResult.StatusCode);
+        Assert.Equal(statusCode, objResult?.StatusCode);
         var response = (T) objResult?.Value!;
         Assert.NotNull(response);
         return response;
